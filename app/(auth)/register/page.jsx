@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
-import { Eye, EyeOff, Mail, Lock, User, ImageIcon, CheckCircle2, Sparkles } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User, ImageIcon, CheckCircle2, Sparkles, Rocket } from "lucide-react"; // Added Rocket
 
 export default function Register() {
   const { createUser, updateUserProfile, googleLogin } = useContext(AuthContext);
@@ -42,7 +42,6 @@ export default function Register() {
       .catch((err) => toast.error(err.message));
   };
 
-  
   const handleGoogle = async () => {
     try {
       await googleLogin();
@@ -56,15 +55,11 @@ export default function Register() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#070B1A] flex items-center justify-center px-4 py-10">
 
-      {/* Background */}
-
       <div className="absolute top-30 left-30 w-75 h-75 bg-violet-600/30 blur-3xl rounded-full"></div>
       <div className="absolute bottom-30 right-30 w-75 h-75 bg-cyan-500/30 blur-3xl rounded-full"></div>
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-size-[40px_40px]" />
 
       <div className="relative z-10 w-full max-w-5xl grid lg:grid-cols-2 rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-
-        {/* Left Side */}
 
         <div className="hidden lg:flex flex-col justify-between p-12 bg-linear-to-br from-cyan-500/10 to-violet-600/20 border-r border-white/10">
           <div>
@@ -78,17 +73,21 @@ export default function Register() {
             </p>
           </div>
 
-          <div className="space-y-4">
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-              <p className="text-sm text-gray-300">🚀 Fast & secure registration</p>
+          {/* BEAUTIFUL FLOATING ANIMATION INSTEAD OF TEXT CARDS */}
+          <div className="relative flex items-center justify-center h-48 mt-8">
+            {/* Outer rotating dashed ring */}
+            <div className="absolute w-40 h-40 rounded-full border-2 border-dashed border-cyan-500/30 animate-[spin_8s_linear_reverse_infinite]" />
+            {/* Inner pulsing ring */}
+            <div className="absolute w-28 h-28 rounded-full border border-violet-500/50 animate-[ping_3s_cubic-bezier(0,0,0.2,1)_infinite]" />
+            {/* Central Floating Card */}
+            <div className="relative z-10 w-20 h-20 bg-linear-to-tr from-cyan-500 to-violet-600 rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(6,182,212,0.6)] animate-[bounce_4s_ease-in-out_infinite]">
+              <Rocket size={36} className="text-white drop-shadow-lg -translate-y-1 translate-x-1" />
             </div>
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-              <p className="text-sm text-gray-300">🎨 Beautiful futuristic interface</p>
-            </div>
+            {/* Small floating particles */}
+            <div className="absolute top-6 right-10 w-2.5 h-2.5 bg-violet-400 rounded-full animate-pulse" />
+            <div className="absolute bottom-6 left-8 w-2 h-2 bg-cyan-400 rounded-full animate-pulse delay-150" />
           </div>
         </div>
-
-        {/* Right Side */}
 
         <div className="p-8 md:p-12 bg-[#0D1324]/80">
 
@@ -97,7 +96,6 @@ export default function Register() {
             <p className="text-gray-400">Create your IdeaVault account</p>
           </div>
 
-          
           <button
             type="button"
             onClick={handleGoogle}
@@ -107,8 +105,6 @@ export default function Register() {
             Continue with Google
           </button>
 
-          {/* Divider */}
-
           <div className="flex items-center gap-4 my-8">
             <div className="flex-1 h-px bg-white/10"></div>
             <span className="text-xs text-gray-400">CREATE ACCOUNT</span>
@@ -116,7 +112,6 @@ export default function Register() {
           </div>
 
           <form onSubmit={handleRegister} className="space-y-5">
-            
             <div>
               <label className="text-sm text-gray-300 mb-2 block">Full Name</label>
               <div className="relative">
@@ -128,7 +123,6 @@ export default function Register() {
               </div>
             </div>
 
-            
             <div>
               <label className="text-sm text-gray-300 mb-2 block">Email Address</label>
               <div className="relative">
@@ -140,7 +134,6 @@ export default function Register() {
               </div>
             </div>
 
-            
             <div>
               <label className="text-sm text-gray-300 mb-2 block">Photo URL</label>
               <div className="relative">
@@ -152,7 +145,6 @@ export default function Register() {
               </div>
             </div>
 
-           
             <div>
               <label className="text-sm text-gray-300 mb-2 block">Password</label>
               <div className="relative">
@@ -172,8 +164,6 @@ export default function Register() {
                 </button>
               </div>
 
-              {/* Validation */}
-
               <div className="mt-4 space-y-2">
                 <p className={`text-xs flex items-center gap-2 ${validations.length ? "text-green-400" : "text-gray-400"}`}>
                   <CheckCircle2 size={14} /> At least 6 characters
@@ -186,8 +176,6 @@ export default function Register() {
                 </p>
               </div>
             </div>
-
-            {/* Register */}
 
             <button
               type="submit"
