@@ -37,16 +37,16 @@ export default function Home() {
     const displayIdeas = trendingIdeas.length > 0 ? trendingIdeas.slice(0, 6) : fallbackIdeas;
 
     return (
-        <div className="pb-20 bg-[var(--background)] transition-colors">
+        <div className="pb-20 bg-(--background) transition-colors">
             
             {/* 1. HERO SECTION */}
-            <section className="max-w-[1400px] mx-auto px-6 pt-16 pb-24 grid lg:grid-cols-2 gap-12 items-center relative">
+            <section className="max-w-350 mx-auto px-6 pt-16 pb-24 grid lg:grid-cols-2 gap-12 items-center relative">
                 <div className="absolute top-0 left-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl -z-10"></div>
                 
                 <div className="max-w-xl z-10">
                     <h1 className="text-5xl lg:text-[64px] font-extrabold leading-[1.1] mb-6 tracking-tight">
-                        <span className="text-[var(--foreground)]">Share Ideas.</span><br/>
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600">
+                        <span className="text-(--foreground)">Share Ideas.</span><br/>
+                        <span className="bg-clip-text text-transparent bg-linear-to-r from-primary to-purple-600">
                             Build the Future.
                         </span>
                     </h1>
@@ -57,21 +57,20 @@ export default function Home() {
                         <Link href="/ideas" className="bg-primary hover:bg-indigo-600 text-white px-8 py-3.5 rounded-full font-semibold transition-all shadow-lg hover:shadow-indigo-500/30 hover:-translate-y-0.5">
                             Explore Ideas
                         </Link>
-                        <Link href="/add-idea" className="bg-transparent border-2 border-gray-200 dark:border-gray-800 text-[var(--foreground)] hover:border-primary hover:text-primary dark:hover:border-primary px-8 py-3.5 rounded-full font-semibold transition-all hover:-translate-y-0.5 bg-white/50 dark:bg-transparent backdrop-blur-sm">
+                        <Link href="/add-idea" className="bg-transparent border-2 border-gray-200 dark:border-gray-800 text-(--foreground) hover:border-primary hover:text-primary dark:hover:border-primary px-8 py-3.5 rounded-full font-semibold transition-all hover:-translate-y-0.5  dark:bg-transparent backdrop-blur-sm">
                             Add Your Idea
                         </Link>
                     </div>
                 </div>
-                <div className="flex justify-end relative w-full h-[400px]">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-purple-500/20 rounded-3xl transform rotate-3 scale-105 -z-10 blur-lg"></div>
+                <div className="flex justify-end relative w-full h-100">
+                    <div className="absolute inset-0 bg-linear-to-tr from-primary/20 to-purple-500/20 rounded-3xl transform rotate-3 scale-105 -z-10 blur-lg"></div>
                     
-                    {/* FIXED: 8 Slides, 2.5 Second Delay, Removed 'Slide 1' Alt text! */}
                     <Swiper
                         modules={[Autoplay, Pagination, EffectFade]}
                         effect="fade"
                         autoplay={{ delay: 2500, disableOnInteraction: false }}
                         pagination={{ clickable: true }}
-                        className="w-full max-w-[600px] h-[400px] rounded-3xl shadow-2xl border-4 border-white dark:border-gray-900"
+                        className="w-full max-w-150 h-100 rounded-3xl shadow-2xl border-4 border-white dark:border-gray-900"
                     >
                         <SwiperSlide>
                             <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Innovation Team" className="w-full h-full object-cover" />
@@ -99,9 +98,9 @@ export default function Home() {
             </section>
 
             {/* 2. TRENDING IDEAS */}
-            <section className="max-w-[1400px] mx-auto px-6 mb-24">
+            <section className="max-w-350 mx-auto px-6 mb-24">
                 <div className="flex justify-between items-center mb-8">
-                    <h2 className="text-2xl font-bold text-[var(--foreground)]">Trending Ideas</h2>
+                    <h2 className="text-2xl font-bold text-(--foreground)">Trending Ideas</h2>
                     <Link href="/ideas" className="group text-sm font-bold text-primary border border-gray-200 dark:border-gray-800 px-5 py-2.5 rounded-full hover:border-primary/50 hover:bg-primary/5 transition-all flex items-center gap-2">
                         View All <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                     </Link>
@@ -109,12 +108,13 @@ export default function Home() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
                     {displayIdeas.map((idea, i) => (
                         <Link 
-                            href={`/ideas/${idea._id || i}`} 
+                            href={idea._id ? `/ideas/${idea._id}` : '#'} 
+                            onClick={(e) => !idea._id && e.preventDefault()} // Safety lock for fallback ideas
                             key={idea._id || i} 
-                            className="group bg-[var(--card)] border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-white dark:bg-[#0A0A0A] flex flex-col block cursor-pointer"
+                            className="group bg-(--card) border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1  dark:bg-[#0A0A0A] flex flex-col cursor-pointer"
                         >
-                            <div className="aspect-[4/3] w-full overflow-hidden relative bg-gray-100 dark:bg-gray-900 shrink-0">
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10"></div>
+                            <div className="aspect-4/3 w-full overflow-hidden relative bg-gray-100 dark:bg-gray-900 shrink-0">
+                                <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent z-10"></div>
                                 <img 
                                     src={idea.imageURL || idea.img} 
                                     alt={idea.title} 
@@ -123,16 +123,23 @@ export default function Home() {
                                 />
                             </div>
                             
-                            <div className="p-5 flex-grow flex flex-col">
+                            <div className="p-5 grow flex flex-col">
                                 <div>
-                                    <h3 className="font-bold text-base mb-2 text-[var(--foreground)] line-clamp-1">{idea.title}</h3>
-                                    <span className="text-xs font-semibold text-primary bg-indigo-50 dark:bg-indigo-900/30 px-2.5 py-1 rounded-md inline-block mb-4">
+                                    <h3 className="font-bold text-base mb-2 text-(--foreground) line-clamp-1">{idea.title}</h3>
+                                    <span className="text-xs font-semibold text-primary bg-indigo-50 dark:bg-indigo-900/30 px-2.5 py-1 rounded-md inline-block mb-3">
                                         {idea.category || idea.cat}
                                     </span>
                                 </div>
-                                <div className="mt-auto flex gap-4 items-center text-xs font-medium text-gray-500 pt-2">
-                                    <span className="flex items-center gap-1.5 hover:text-red-500 transition-colors cursor-pointer"><Heart size={14}/> {idea.likes || 0}</span>
-                                    <span className="flex items-center gap-1.5 hover:text-blue-500 transition-colors cursor-pointer"><MessageSquare size={14}/> {idea.comments || 0}</span>
+                                
+                                {/* FIXED: Added functional 'View Details' button layout */}
+                                <div className="mt-auto pt-3 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
+                                    <div className="flex gap-3 items-center text-xs font-medium text-gray-500">
+                                        <span className="flex items-center gap-1 hover:text-red-500 transition-colors"><Heart size={14}/> {idea.likes || 0}</span>
+                                        <span className="flex items-center gap-1 hover:text-blue-500 transition-colors"><MessageSquare size={14}/> {idea.comments || 0}</span>
+                                    </div>
+                                    <span className="text-primary text-xs font-bold flex items-center gap-1 group-hover:underline">
+                                        Details <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                                    </span>
                                 </div>
                             </div>
                         </Link>
@@ -141,7 +148,7 @@ export default function Home() {
             </section>
 
             {/* 3. STATS */}
-            <section className="max-w-[1400px] mx-auto px-6 mb-24">
+            <section className="max-w-350 mx-auto px-6 mb-24">
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
                     {[
                         { icon: <Lightbulb size={28}/>, num: "12,600+", label: "Ideas Shared", color: "text-blue-500", bg: "bg-blue-50 dark:bg-blue-900/20", border: "border-blue-100 dark:border-blue-900/30" },
@@ -154,7 +161,7 @@ export default function Home() {
                                 {stat.icon}
                             </div>
                             <div>
-                                <h4 className="text-3xl font-extrabold text-[var(--foreground)] tracking-tight">{stat.num}</h4>
+                                <h4 className="text-3xl font-extrabold text-(--foreground) tracking-tight">{stat.num}</h4>
                                 <p className="text-sm font-medium text-gray-500 mt-1">{stat.label}</p>
                             </div>
                         </div>
@@ -163,7 +170,7 @@ export default function Home() {
             </section>
 
             {/* 4. JOIN COMMUNITY BANNER */}
-            <section className="max-w-[1400px] mx-auto px-6 mb-24">
+            <section className="max-w-350 mx-auto px-6 mb-24">
                 <div className="bg-[#0A0F24] rounded-3xl p-10 lg:p-16 flex flex-col lg:flex-row items-center justify-between relative overflow-hidden shadow-2xl">
                     <div className="absolute top-0 right-0 w-full h-full opacity-20 pointer-events-none">
                         <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary rounded-full blur-[100px]"></div>
@@ -178,21 +185,21 @@ export default function Home() {
                         </button>
                     </div>
                     
-                    <div className="z-10 hidden lg:block w-[450px] h-[300px] relative rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+                    <div className="z-10 hidden lg:block w-112.5 h-75 relative rounded-2xl overflow-hidden shadow-2xl border border-white/10">
                         <img 
                             src="https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?auto=format&fit=crop&w=800&q=80" 
                             alt="Rocket Launch abstract" 
                             className="w-full h-full object-cover opacity-80" 
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F24] to-transparent"></div>
+                        <div className="absolute inset-0 bg-linear-to-t from-[#0A0F24] to-transparent"></div>
                     </div>
                 </div>
             </section>
 
             {/* 5. HOW IT WORKS */}
-            <section className="max-w-[1400px] mx-auto px-6 mb-24">
+            <section className="max-w-350 mx-auto px-6 mb-24">
                 <div className="text-center max-w-2xl mx-auto mb-12">
-                    <h2 className="text-3xl font-extrabold mb-4 text-[var(--foreground)]">How IdeaVault Works</h2>
+                    <h2 className="text-3xl font-extrabold mb-4 text-(--foreground)">How IdeaVault Works</h2>
                     <p className="text-gray-500 dark:text-gray-400 text-lg">Four simple steps to take your idea from concept to reality.</p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -203,11 +210,11 @@ export default function Home() {
                         { icon: <Users size={28}/>, title: "4. Build", desc: "Find co-founders and collaborators to turn your vision into code." }
                     ].map((step, i) => (
                         <div key={i} className="group bg-white dark:bg-[#0A0A0A] border border-gray-100 dark:border-gray-800 rounded-3xl p-8 text-center flex flex-col items-center shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden">
-                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                             <div className="w-16 h-16 bg-indigo-50 dark:bg-indigo-900/30 text-primary rounded-2xl flex items-center justify-center mb-6 transform group-hover:scale-110 transition-transform group-hover:rotate-3">
                                 {step.icon}
                             </div>
-                            <h3 className="font-bold text-lg mb-3 text-[var(--foreground)]">{step.title}</h3>
+                            <h3 className="font-bold text-lg mb-3 text-(--foreground)">{step.title}</h3>
                             <p className="text-sm text-gray-500 leading-relaxed">{step.desc}</p>
                         </div>
                     ))}
@@ -215,9 +222,9 @@ export default function Home() {
             </section>
 
             {/* 6. CATEGORIES */}
-            <section className="max-w-[1400px] mx-auto px-6 mb-24">
+            <section className="max-w-350 mx-auto px-6 mb-24">
                 <div className="flex justify-between items-center mb-8">
-                    <h2 className="text-2xl font-bold text-[var(--foreground)]">Explore Categories</h2>
+                    <h2 className="text-2xl font-bold text-(--foreground)">Explore Categories</h2>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
                     {[
@@ -233,7 +240,7 @@ export default function Home() {
                                 {cat.icon}
                             </div>
                             <div>
-                                <h4 className="font-bold text-sm text-[var(--foreground)]">{cat.name}</h4>
+                                <h4 className="font-bold text-sm text-(--foreground)">{cat.name}</h4>
                                 <p className="text-xs font-medium text-gray-500 mt-1">{cat.count} ideas</p>
                             </div>
                         </div>
@@ -242,9 +249,9 @@ export default function Home() {
             </section>
 
             {/* 7. SUCCESS STORIES */}
-            <section className="max-w-[1400px] mx-auto px-6 mb-12">
+            <section className="max-w-350 mx-auto px-6 mb-12">
                 <div className="flex justify-between items-center mb-8">
-                    <h2 className="text-2xl font-bold text-[var(--foreground)]">Wall of Love</h2>
+                    <h2 className="text-2xl font-bold text-(--foreground)">Wall of Love</h2>
                 </div>
                 <div className="grid md:grid-cols-3 gap-8">
                     {[
@@ -262,7 +269,7 @@ export default function Home() {
                             <div className="flex items-center gap-4">
                                 <img src={`https://i.pravatar.cc/150?img=${story.img}`} alt={story.name} className="w-12 h-12 rounded-full object-cover border-2 border-white dark:border-gray-800 shadow-sm" />
                                 <div>
-                                    <p className="text-sm font-bold text-[var(--foreground)]">{story.name}</p>
+                                    <p className="text-sm font-bold text-(--foreground)">{story.name}</p>
                                     <p className="text-xs text-gray-500 font-medium">{story.role}</p>
                                 </div>
                             </div>
