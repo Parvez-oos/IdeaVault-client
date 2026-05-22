@@ -1,6 +1,7 @@
 💡 IdeaVault
 
 Live Website URL:idea-vault-client-kappa.vercel.app
+
 Server Repository:https://github.com/Parvez-oos/ideaVault-server.git
 
 IdeaVault is a premium, modern platform designed for dreamers, thinkers, and innovators to share, discover, and validate cutting-edge startup ideas.
