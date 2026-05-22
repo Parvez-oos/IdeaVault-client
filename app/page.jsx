@@ -108,10 +108,10 @@ export default function Home() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
                     {displayIdeas.map((idea, i) => (
                         <Link 
-                            href={idea._id ? `/ideas/${idea._id}` : '#'} 
-                            onClick={(e) => !idea._id && e.preventDefault()} // Safety lock for fallback ideas
+                            // FIXED: If it's a fallback idea without a real DB ID, safely route to /ideas instead of crashing
+                            href={idea._id ? `/ideas/${idea._id}` : '/ideas'} 
                             key={idea._id || i} 
-                            className="group bg-(--card) border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1  dark:bg-[#0A0A0A] flex flex-col cursor-pointer"
+                            className="group bg-(--card) border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 dark:bg-[#0A0A0A] flex flex-col cursor-pointer"
                         >
                             <div className="aspect-4/3 w-full overflow-hidden relative bg-gray-100 dark:bg-gray-900 shrink-0">
                                 <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent z-10"></div>
@@ -131,13 +131,13 @@ export default function Home() {
                                     </span>
                                 </div>
                                 
-                                {/* FIXED: Added functional 'View Details' button layout */}
-                                <div className="mt-auto pt-3 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
+                                {/* FIXED: Professional 'View Details' Button UI */}
+                                <div className="mt-auto pt-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
                                     <div className="flex gap-3 items-center text-xs font-medium text-gray-500">
-                                        <span className="flex items-center gap-1 hover:text-red-500 transition-colors"><Heart size={14}/> {idea.likes || 0}</span>
-                                        <span className="flex items-center gap-1 hover:text-blue-500 transition-colors"><MessageSquare size={14}/> {idea.comments || 0}</span>
+                                        <span className="flex items-center gap-1.5 hover:text-red-500 transition-colors"><Heart size={14}/> {idea.likes || 0}</span>
+                                        <span className="flex items-center gap-1.5 hover:text-blue-500 transition-colors"><MessageSquare size={14}/> {idea.comments || 0}</span>
                                     </div>
-                                    <span className="text-primary text-xs font-bold flex items-center gap-1 group-hover:underline">
+                                    <span className="bg-primary/10 text-primary hover:bg-primary hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition-colors duration-300">
                                         Details <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
                                     </span>
                                 </div>
