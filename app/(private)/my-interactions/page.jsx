@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '@/context/AuthProvider';
 import useAxiosSecure from '@/hooks/useAxiosSecure';
 import Link from 'next/link';
-import { MessageSquare, ArrowRight, Loader2, Clock, Sparkles } from 'lucide-react';
+import { MessageSquare, ArrowRight, Loader2, Clock, Sparkles, Lock } from 'lucide-react'; // Added Lock import
 
 export default function MyInteractions() {
     const { user } = useContext(AuthContext);
@@ -12,15 +12,16 @@ export default function MyInteractions() {
     const [interactedIdeas, setInteractedIdeas] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // Pagination State
     const [currentPage, setCurrentPage] = useState(1);
     const ITEMS_PER_PAGE = 8;
 
-    // FETCH REAL INTERACTIONS FROM DATABASE
     const fetchInteractions = async () => {
-        if (!user?.email) return;
+        
+        if (!user?.email) {
+            setLoading(false);
+            return;
+        }
         try {
-            // This backend route returns the actual Ideas that this user has commented on
             const res = await axiosSecure.get(`/comments/interactions/${user.email}`);
             setInteractedIdeas(res.data);
             setLoading(false);
@@ -30,7 +31,6 @@ export default function MyInteractions() {
         }
     };
 
-    // Use setTimeout to bypass strict React 15/19 setState linter errors
     useEffect(() => {
         const timer = setTimeout(() => {
             fetchInteractions();
@@ -38,12 +38,10 @@ export default function MyInteractions() {
         return () => clearTimeout(timer);
     }, [user]);
 
-    // Scroll to top on page change
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [currentPage]);
 
-    // PAGINATION MATH
     const totalPages = Math.ceil(interactedIdeas.length / ITEMS_PER_PAGE);
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const currentIdeas = interactedIdeas.slice(startIndex, startIndex + ITEMS_PER_PAGE);
@@ -60,11 +58,32 @@ export default function MyInteractions() {
         return pages;
     };
 
+    // LOADING STATE
     if (loading) {
         return (
             <div className="min-h-[80vh] flex flex-col items-center justify-center">
                 <Loader2 className="animate-spin text-primary mb-4" size={40} />
                 <p className="text-gray-500 font-medium">Loading your activity...</p>
+            </div>
+        );
+    }
+
+    
+    if (!user) {
+        return (
+            <div className="min-h-[80vh] flex flex-col items-center justify-center px-6">
+                <div className="bg-(--card) border border-(--border) rounded-3xl p-10 md:p-14 text-center shadow-xl max-w-lg w-full">
+                    <div className="w-20 h-20 bg-indigo-50 dark:bg-indigo-900/20 text-primary rounded-full flex items-center justify-center mb-6 mx-auto border border-indigo-100 dark:border-indigo-900/50">
+                        <Lock size={32} />
+                    </div>
+                    <h3 className="text-2xl font-extrabold text-(--foreground) mb-3 tracking-tight">Login Required</h3>
+                    <p className="text-gray-500 mb-8 leading-relaxed">
+                        Please log in to your account to view your recent interactions and comment history.
+                    </p>
+                    <Link href="/login" className="bg-primary hover:bg-primary-hover text-white px-8 py-3.5 rounded-xl font-bold transition shadow-lg shadow-primary/30 inline-flex items-center gap-2">
+                        Go to Login <ArrowRight size={16} />
+                    </Link>
+                </div>
             </div>
         );
     }
@@ -103,7 +122,7 @@ export default function MyInteractions() {
                         <Link 
                             href={`/ideas/${idea._id}`} 
                             key={idea._id}
-                            className="group relative bg-(--card) border border-(--border) rounded-2xl p-5 hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col md:flex-row gap-6 items-start md:items-center overflow-hidden "
+                            className="group relative bg-(--card) border border-(--border) rounded-2xl p-5 hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col md:flex-row gap-6 items-start md:items-center overflow-hidden"
                         >
                             {/* Hover Glow Effect */}
                             <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
@@ -151,7 +170,7 @@ export default function MyInteractions() {
                 </div>
             )}
 
-            {/* Functional Pagination Controls (8 Items Per Page) */}
+            {/* Functional Pagination Controls */}
             {totalPages > 1 && (
                 <div className="flex justify-center items-center gap-2 mt-12">
                     <button 

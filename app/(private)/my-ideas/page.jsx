@@ -4,7 +4,7 @@ import { AuthContext } from '@/context/AuthProvider';
 import useAxiosSecure from '@/hooks/useAxiosSecure';
 import useAxiosPublic from '@/hooks/useAxiosPublic';
 import { toast } from 'sonner';
-import { Edit, Trash2, Loader2, ArrowRight, X } from 'lucide-react';
+import { Edit, Trash2, Loader2, ArrowRight, X, Lock } from 'lucide-react'; // Added Lock import
 import Link from 'next/link';
 
 export default function MyIdeas() {
@@ -15,25 +15,25 @@ export default function MyIdeas() {
     const [ideas, setIdeas] = useState([]);
     const [loading, setLoading] = useState(true);
     
-    
     const [currentPage, setCurrentPage] = useState(1);
     const ITEMS_PER_PAGE = 8; // Exactly 8 items per page
 
-    
     const [editingIdea, setEditingIdea] = useState(null);
 
-    
     const fetchMyIdeas = async () => {
-        if (!user?.email) return;
+        
+        if (!user?.email) {
+            setLoading(false);
+            return;
+        }
         try {
-            // 1. Try to fetch the ideas you specifically created
+            
             const res = await axiosSecure.get(`/ideas/user/${user.email}`);
             
             if (res.data.length > 0) {
                 setIdeas(res.data);
             } else {
-                // 2. FALLBACK: If you haven't created any yet, fetch 30 REAL ideas from the general pool
-                // This guarantees every card has a real MongoDB _id so Clicks, Edits, and Deletes work perfectly!
+                
                 const fallbackRes = await axiosPublic.get('/ideas?limit=30');
                 setIdeas(fallbackRes.data);
             }
@@ -44,7 +44,6 @@ export default function MyIdeas() {
         }
     };
 
-    
     useEffect(() => {
         const timer = setTimeout(() => {
             fetchMyIdeas();
@@ -58,7 +57,6 @@ export default function MyIdeas() {
     }, [currentPage]);
 
     // ================= DELETE FUNCTION =================
-
     const handleDelete = async (e, id) => {
         e.preventDefault(); 
         e.stopPropagation();
@@ -75,7 +73,6 @@ export default function MyIdeas() {
     };
 
     // ================= EDIT FUNCTION =================
-
     const handleUpdate = async (e) => {
         e.preventDefault();
         const updatedData = {
@@ -87,7 +84,6 @@ export default function MyIdeas() {
             await axiosSecure.put(`/ideas/${editingIdea._id}`, updatedData);
             toast.success('Idea updated successfully!');
             setEditingIdea(null); // Close Modal
-            
             
             setIdeas(prev => prev.map(idea => 
                 idea._id === editingIdea._id 
@@ -122,7 +118,28 @@ export default function MyIdeas() {
         return pages;
     };
 
+    // LOADING STATE
     if (loading) return <div className="min-h-[80vh] flex flex-col items-center justify-center"><Loader2 className="animate-spin text-primary mb-4" size={40} /><p className="text-gray-500">Loading your vault...</p></div>;
+
+    // FIXED: UNAUTHENTICATED STATE MESSAGE CARD
+    if (!user) {
+        return (
+            <div className="min-h-[80vh] flex flex-col items-center justify-center px-6">
+                <div className="bg-(--card) border border-(--border) rounded-3xl p-10 md:p-14 text-center shadow-xl max-w-lg w-full">
+                    <div className="w-20 h-20 bg-indigo-50 dark:bg-indigo-900/20 text-primary rounded-full flex items-center justify-center mb-6 mx-auto border border-indigo-100 dark:border-indigo-900/50">
+                        <Lock size={32} />
+                    </div>
+                    <h3 className="text-2xl font-extrabold text-(--foreground) mb-3 tracking-tight">Login Required</h3>
+                    <p className="text-gray-500 mb-8 leading-relaxed">
+                        Please log in to your account to view, manage, and track your submitted startup ideas.
+                    </p>
+                    <Link href="/login" className="bg-primary hover:bg-primary-hover text-white px-8 py-3.5 rounded-xl font-bold transition shadow-lg shadow-primary/30 inline-flex items-center gap-2">
+                        Go to Login <ArrowRight size={16} />
+                    </Link>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="max-w-250 mx-auto px-6 py-12 min-h-[80vh] relative">
@@ -193,7 +210,7 @@ export default function MyIdeas() {
                 ))}
             </div>
             
-            {/* Functional Pagination Controls (8 Items Per Page) */}
+            {/* Functional Pagination Controls */}
             {totalPages > 1 && (
                 <div className="flex justify-center items-center gap-2 mt-12">
                     <button 
