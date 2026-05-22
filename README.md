@@ -1,36 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+💡 IdeaVault
 
-## Getting Started
+Live Website URL:idea-vault-client-kappa.vercel.app
+Server Repository:https://github.com/Parvez-oos/ideaVault-server.git
 
-First, run the development server:
+IdeaVault is a premium, modern platform designed for dreamers, thinkers, and innovators to share, discover, and validate cutting-edge startup ideas.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+🚀 Key Features:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Dynamic Idea Validation & Discovery: Explore a massive database of startup concepts with advanced, case-insensitive search and category filtering, featuring fully functional pagination.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+2. Secure Authentication & Route Protection: Implements Firebase Authentication (Google & Email/Password with strict validation) paired with JWT-backed private routes. Auth state persists flawlessly upon reloading, ensuring users are never wrongly redirected.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Comprehensive Interaction System: Users can actively engage by leaving comments, editing their own comments, deleting them, and bookmarking their favorite ideas straight to their personalized dashboard.
 
-## Learn More
+4. Premium Light/Dark UI: Built with Next.js, Tailwind CSS, and Framer Motion, featuring a flawless, system-aware Light/Dark mode toggle, glassmorphic cards, and custom toast notifications (no default alerts).
 
-To learn more about Next.js, take a look at the following resources:
+5. Personalized User Dashboard: A dedicated space where innovators can update their profile information, track their interactions, manage saved bookmarks, and fully manage (edit/delete) the startup ideas they have pitched.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+🛠 Tech Stack:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Frontend: Next.js 15 (App Router), React, Tailwind CSS, Framer Motion, Swiper.js
+2. State & Auth: Context API, Firebase Authentication, JWT
+3. Backend Link: Express.js, MongoDB, Node.js
